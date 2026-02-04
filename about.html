@@ -17,6 +17,9 @@
         <a href="gallery.html">Gallery</a>
         <a href="about.html">About Us</a>
         <a href="events.html">Events</a>
+        <a href="#" id="cart-icon">
+            <img src="cart.png" alt="Shopping Cart" style="height: 30px; width: auto;">
+        </a>
     </nav>
 </header>
 
@@ -61,6 +64,19 @@
         <p>&copy; 2026 Book Haven Bookstore</p>
     </div>
 </footer>
+
+<div id="cart-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2>Your Cart</h2>
+        <ul id="cart-items-list">
+            </ul>
+        <div class="modal-buttons">
+            <button id="clear-cart" class="btn-cta">Clear Cart</button>
+            <button id="process-order" class="btn-cta">Process Order</button>
+        </div>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>
