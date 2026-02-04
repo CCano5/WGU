@@ -12,7 +12,7 @@ h1, h2, h3 {
     color: #2E2E4E; /* Midnight Manuscript */
 }
 
-/* HEADER: Industry Standard (Logo Left, Nav Right) */
+/* HEADER: (Logo Left, Nav Right) */
 header {
     background-color: #2E2E4E; /* Midnight Manuscript */
     display: flex;
@@ -365,4 +365,14 @@ footer {
 
 .event-day:hover {
     background-color: #fff5f6; 
+}
+
+/* --- BUTTON GROUPS FOR GALLERY --- */
+.button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Creates consistent space between buttons */
+    margin-top: 30px;
+    flex-wrap: wrap; /* Ensures they stack nicely on mobile */
 }
