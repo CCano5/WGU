@@ -1,7 +1,7 @@
-// Wait for the DOM to be fully initialized [cite: 1030-1031]
+// Wait for the DOM to be fully initialized
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. GLOBAL FOOTER: Subscribe Feature (sessionStorage placeholder) ---
+    // --- 1. GLOBAL FOOTER: Subscribe Feature ---
     const subscribeBtn = document.querySelector('footer .btn-cta');
     if (subscribeBtn) {
         subscribeBtn.addEventListener('click', (e) => {
@@ -10,64 +10,105 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- 2. GALLERY PAGE: Shopping Cart (sessionStorage) [cite: 1282-1284] ---
-    const addToCartBtns = document.querySelectorAll('.product-card .btn-cta');
+    // --- 2. GALLERY PAGE: Shopping Cart Logic ---
     
+    // "Add to Cart" Buttons
+    const addToCartBtns = document.querySelectorAll('.product-card .btn-cta');
     addToCartBtns.forEach(btn => {
         btn.addEventListener('click', (e) => {
-            // Logic to pull product name from the card header [cite: 1195]
             const productName = e.target.parentElement.querySelector('h3').innerText;
             
-            // Retrieve existing cart or initialize empty array [cite: 1196]
             let cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
             cart.push(productName);
             
-            // Re-serialize and store in sessionStorage [cite: 1195]
             sessionStorage.setItem('cartItems', JSON.stringify(cart));
             alert("Item added to the cart.");
         });
     });
 
-    // View Cart Modal Alert [cite: 1283]
-    const viewCartBtn = document.querySelector('.gallery-header .btn-cta');
-    if (viewCartBtn) {
-        viewCartBtn.addEventListener('click', () => {
-            const cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
-            if (cart.length === 0) {
-                alert("Your cart is empty.");
-            } else {
-                alert("Current Cart Items:\n" + cart.join("\n"));
-            }
+    // --- MODAL LOGIC ---
+    const modal = document.getElementById('cart-modal');
+    const cartIcon = document.getElementById('cart-icon');
+    const viewCartBtn = document.getElementById('view-cart-btn'); // Secondary Button
+    const closeModal = document.querySelector('.close-modal');
+    const cartList = document.getElementById('cart-items-list');
+
+    // Function to Open Modal and Populate List
+    const openModal = (e) => {
+        if (e) e.preventDefault(); // Prevent default link behavior
+        
+        // Populate the list
+        cartList.innerHTML = ''; // Clear previous list
+        const cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
+        
+        if (cart.length === 0) {
+            cartList.innerHTML = '<li style="list-style:none;">Your cart is empty.</li>';
+        } else {
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                cartList.appendChild(li);
+            });
+        }
+        
+        modal.style.display = "block"; // Show modal
+    };
+
+    // Trigger 1: Click on Cart Icon in Header
+    if (cartIcon && modal) {
+        cartIcon.addEventListener('click', openModal);
+    }
+
+    // Trigger 2: Click on "View Shopping Cart" Button in Body
+    if (viewCartBtn && modal) {
+        viewCartBtn.addEventListener('click', openModal);
+    }
+
+    // Close Modal when X is clicked
+    if (closeModal) {
+        closeModal.addEventListener('click', () => {
+            modal.style.display = "none";
         });
     }
 
-    // Clear Cart / Process Order: Data Deletion [cite: 1284]
-    const clearBtn = document.getElementById('clear-cart');
-    const processBtn = document.getElementById('process-order');
-
-    [clearBtn, processBtn].forEach(btn => {
-        if (btn) {
-            btn.addEventListener('click', () => {
-                sessionStorage.removeItem('cartItems'); // Clear the session storage key [cite: 1197]
-                const msg = btn.id === 'clear-cart' ? "Cart cleared." : "Thank you for your order.";
-                alert(msg);
-            });
+    // Close Modal when clicking outside the box
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
         }
     });
 
-    // --- 3. ABOUT US: Custom Orders (localStorage)  ---
+    // --- BUTTONS INSIDE MODAL: Clear & Process ---
+    const clearBtn = document.getElementById('clear-cart');
+    const processBtn = document.getElementById('process-order');
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('cartItems'); 
+            cartList.innerHTML = '<li style="list-style:none;">Your cart is empty.</li>'; // Visually clear list
+            alert("Cart cleared.");
+        });
+    }
+
+    if (processBtn) {
+        processBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('cartItems'); 
+            modal.style.display = "none"; 
+            alert("Thank you for your order.");
+        });
+    }
+
+    // --- 3. ABOUT US: Custom Orders ---
     const contactForm = document.querySelector('.custom-form');
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
             
-            // Encapsulate form data into a persistent object [cite: 1273]
             const feedbackData = {
                 name: document.getElementById('name').value,
                 request: document.getElementById('request').value
             };
             
-            // Save to localStorage [cite: 1274]
             localStorage.setItem('customerFeedback', JSON.stringify(feedbackData));
             alert("Thank you for your message.");
             contactForm.reset();
