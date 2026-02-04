@@ -1,0 +1,368 @@
+/* Typography: Option 2 */
+body {
+    font-family: 'Calibri', 'Arial', sans-serif;
+    color: #131C26; /* Font Color 2: Bookish Black */
+    margin: 0;
+    background-color: #fdfdfd;
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    font-family: 'Arial', sans-serif;
+    color: #2E2E4E; /* Midnight Manuscript */
+}
+
+/* HEADER: Industry Standard (Logo Left, Nav Right) */
+header {
+    background-color: #2E2E4E; /* Midnight Manuscript */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* LOGO FRAME */
+.logo-frame {
+    background-color: #ffffff;
+    border: 3px solid #742C36; /* Romantic Red */
+    padding: 5px;
+    border-radius: 4px;
+    height: 60px;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-frame img {
+    max-height: 100%;
+    max-width: 100%;
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+}
+
+nav a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+    transition: 0.3s;
+}
+
+nav a:hover {
+    color: #742C36; /* Romantic Red */
+}
+
+/* HERO SECTION */
+.hero {
+    background-color: #f4f1ea; /* Light parchment tone */
+    text-align: center;
+    padding: 30px 20px 60px 20px;
+    border-bottom: 5px solid #742C36;
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    font-size: 1.3rem;
+    max-width: 850px;
+    margin: 0 auto 20px auto;
+}
+
+.hero-img-container {
+    max-width: 1000px;
+    margin: 20px auto 0 auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.hero-img-container img {
+    width: 100%;
+    height: auto;
+    max-height: 400px; 
+    object-fit: cover; 
+    display: block;
+}
+
+/* SHOP BY CATEGORY SECTION */
+.category-container {
+    max-width: 1100px;
+    margin: 80px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.category-grid {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.category-card {
+    background-color: #2E2E4E; /* Midnight Manuscript */
+    color: white;
+    padding: 50px 20px;
+    flex: 1;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* FOOTER */
+footer {
+    background-color: #3E5641; /* Book Worm */
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.btn-cta {
+    background-color: #742C36; /* Romantic Red */
+    color: white;
+    border: none;
+    padding: 18px 36px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    transition: 0.3s;
+}
+
+.btn-cta:hover {
+    background-color: #5a222a;
+}
+
+/* --- GALLERY PAGE STYLES --- */
+.gallery-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto 60px auto;
+    padding: 0 20px;
+}
+
+.product-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+    max-width: 100%;
+    height: 200px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.product-card h3 {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    min-height: 3rem;
+}
+
+.product-card p {
+    flex-grow: 1;
+    margin-bottom: 20px;
+}
+
+.product-card .btn-cta {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    margin-top: auto;
+}
+
+/* --- ABOUT PAGE STYLES --- */
+.about-layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 50px;
+    max-width: 1100px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.about-info {
+    flex: 1;
+    min-width: 300px;
+}
+
+.hours-box {
+    background-color: #f4f1ea;
+    padding: 20px;
+    border-left: 5px solid #742C36;
+    margin-top: 20px;
+    border-radius: 4px;
+}
+
+.hours-list {
+    list-style: none;
+    padding: 0;
+    line-height: 2;
+}
+
+.feedback-section {
+    flex: 1;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    min-width: 300px;
+}
+
+.custom-form label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+    color: #2E2E4E;
+}
+
+.custom-form input, 
+.custom-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.custom-form textarea {
+    height: 120px;
+    resize: vertical;
+}
+
+.custom-form .btn-cta {
+    width: 100%;
+    margin-top: 20px;
+}
+
+/* --- EVENTS PAGE STYLES (Wide Layout) --- */
+.calendar-section {
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 0 20px;
+}
+
+/* Testimonial: Wide Banner Style */
+.testimonial-box {
+    background-color: #f0f0f5;
+    padding: 15px 30px;
+    border-left: 5px solid #742C36;
+    border-radius: 4px;
+    text-align: center;
+    max-width: 1000px; 
+    margin: 20px auto 10px auto;
+}
+
+.testimonial-box .quote {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-size: 1.1rem; 
+    color: #555;
+    margin: 0;
+    display: inline;
+}
+
+.testimonial-box .citation {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #2E2E4E;
+    margin: 5px 0 0 0;
+}
+
+/* Calendar Grid */
+.calendar-wrapper {
+    width: 100%;
+    background: white;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.event-calendar {
+    width: 100%;
+    border-collapse: collapse; 
+    table-layout: fixed;
+}
+
+.event-calendar th {
+    background-color: #2E2E4E;
+    color: white;
+    padding: 10px; 
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    border-right: 1px solid #4a4a6a;
+}
+
+.event-calendar td {
+    border: 1px solid #ccc;
+    height: 80px; 
+    vertical-align: top;
+    padding: 5px; 
+    background-color: #fff;
+    transition: background 0.2s;
+}
+
+.date {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #888;
+}
+
+.empty {
+    background-color: #f9f9f9;
+}
+
+.event-tag {
+    display: block;
+    background-color: #742C36;
+    color: white;
+    font-size: 0.75rem; 
+    padding: 4px;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.event-day:hover {
+    background-color: #fff5f6; 
+}
