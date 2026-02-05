@@ -28,19 +28,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('cart-modal');
     const cartList = document.getElementById('cart-items-list');
     const closeBtn = document.querySelector('.close-modal');
-    
-    // Triggers: The Cart Icon (Header) AND The View Cart Button (Gallery)
     const cartIcon = document.getElementById('cart-icon');
     const viewCartBtn = document.getElementById('view-cart-btn');
 
     // Function to Open Modal and Populate List
     function openModal(e) {
-        e.preventDefault(); // Stop page jump
-        
-        // Clear previous list
+        e.preventDefault(); 
         cartList.innerHTML = ''; 
-        
-        // Get fresh data
         const cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
         
         if (cart.length === 0) {
@@ -53,51 +47,55 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Show the window
         if (modal) modal.style.display = "block";
     }
 
-    // Attach listener to Cart Icon (if it exists on this page)
-    if (cartIcon) {
-        cartIcon.addEventListener('click', openModal);
-    }
+    if (cartIcon) cartIcon.addEventListener('click', openModal);
+    if (viewCartBtn) viewCartBtn.addEventListener('click', openModal);
 
-    // Attach listener to View Cart Button (if it exists on this page)
-    if (viewCartBtn) {
-        viewCartBtn.addEventListener('click', openModal);
-    }
-
-    // Close Modal Logic
     if (closeBtn) {
         closeBtn.addEventListener('click', function() {
             modal.style.display = "none";
         });
     }
 
-    // Close if clicking outside the box
     window.addEventListener('click', function(e) {
         if (e.target === modal) {
             modal.style.display = "none";
         }
     });
 
-    // --- 4. CLEAR CART & PROCESS ORDER (Inside Modal) ---
+    // --- 4. CLEAR CART & PROCESS ORDER (With Empty Checks) ---
     const clearBtn = document.getElementById('clear-cart');
     const processBtn = document.getElementById('process-order');
 
     if (clearBtn) {
         clearBtn.addEventListener('click', function() {
-            sessionStorage.removeItem('cartItems'); 
-            cartList.innerHTML = '<li style="list-style:none;">Your cart is empty.</li>'; // Update UI instantly
-            alert("Cart cleared.");
+            const cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
+            
+            // Check if cart is ALREADY empty
+            if (cart.length === 0) {
+                alert("Your cart is already empty.");
+            } else {
+                sessionStorage.removeItem('cartItems'); 
+                cartList.innerHTML = '<li style="list-style:none;">Your cart is empty.</li>'; 
+                alert("Cart cleared.");
+            }
         });
     }
 
     if (processBtn) {
         processBtn.addEventListener('click', function() {
-            sessionStorage.removeItem('cartItems'); 
-            modal.style.display = "none"; // Close window
-            alert("Thank you for your order.");
+            const cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
+
+            // Check if user is trying to order nothing
+            if (cart.length === 0) {
+                alert("No items in cart. Please add products before processing.");
+            } else {
+                sessionStorage.removeItem('cartItems'); 
+                modal.style.display = "none"; 
+                alert("Thank you for your order.");
+            }
         });
     }
 
