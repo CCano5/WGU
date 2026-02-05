@@ -10,75 +10,116 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // --- 2. SHOPPING CART LOGIC (sessionStorage) ---
-    // Targets the "Add to Cart" buttons on the Gallery page
+    // --- 2. ADD TO CART LOGIC ---
     const addToCartBtns = document.querySelectorAll('.product-card .btn-cta');
     addToCartBtns.forEach(btn => {
         btn.addEventListener('click', function(e) {
-            // Logic to grab the specific book or item name from the card
             const productName = e.target.parentElement.querySelector('h3').innerText;
             
-            // Retrieve current cart from session storage or start a new array [cite: 513]
             let cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
             cart.push(productName);
             
-            // Save the updated array back to sessionStorage [cite: 513]
             sessionStorage.setItem('cartItems', JSON.stringify(cart));
             alert(`${productName} added to the cart.`);
         });
     });
 
-    // View Cart Modal Simulation
-    // Reads from sessionStorage to display current selections [cite: 514]
-    const viewCartBtn = document.querySelector('.gallery-header .btn-cta:first-child');
+    // --- 3. MODAL & CART DISPLAY LOGIC ---
+    const modal = document.getElementById('cart-modal');
+    const cartList = document.getElementById('cart-items-list');
+    const closeBtn = document.querySelector('.close-modal');
+    
+    // Triggers: The Cart Icon (Header) AND The View Cart Button (Gallery)
+    const cartIcon = document.getElementById('cart-icon');
+    const viewCartBtn = document.getElementById('view-cart-btn');
+
+    // Function to Open Modal and Populate List
+    function openModal(e) {
+        e.preventDefault(); // Stop page jump
+        
+        // Clear previous list
+        cartList.innerHTML = ''; 
+        
+        // Get fresh data
+        const cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
+        
+        if (cart.length === 0) {
+            cartList.innerHTML = '<li style="list-style:none;">Your cart is empty.</li>';
+        } else {
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                cartList.appendChild(li);
+            });
+        }
+        
+        // Show the window
+        if (modal) modal.style.display = "block";
+    }
+
+    // Attach listener to Cart Icon (if it exists on this page)
+    if (cartIcon) {
+        cartIcon.addEventListener('click', openModal);
+    }
+
+    // Attach listener to View Cart Button (if it exists on this page)
     if (viewCartBtn) {
-        viewCartBtn.addEventListener('click', function() {
-            const cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
-            if (cart.length === 0) {
-                alert("Your cart is empty.");
-            } else {
-                alert("Your Cart:\n- " + cart.join("\n- "));
-            }
+        viewCartBtn.addEventListener('click', openModal);
+    }
+
+    // Close Modal Logic
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            modal.style.display = "none";
         });
     }
 
-    // Clear Cart & Process Order: Deleting Session Data [cite: 515]
-    const clearBtn = document.getElementById('clear-cart');
-    const processBtn = document.getElementById('process-order');
-
-    [clearBtn, processBtn].forEach(btn => {
-        if (btn) {
-            btn.addEventListener('click', function() {
-                sessionStorage.removeItem('cartItems'); // Clears the storage [cite: 515]
-                const message = btn.id === 'clear-cart' ? "Cart cleared." : "Thank you for your order.";
-                alert(message);
-            });
+    // Close if clicking outside the box
+    window.addEventListener('click', function(e) {
+        if (e.target === modal) {
+            modal.style.display = "none";
         }
     });
 
-    // --- 3. CUSTOM ORDER FORM (localStorage) ---
-    // Persistently saves customer info from the About Us page [cite: 591, 592]
+    // --- 4. CLEAR CART & PROCESS ORDER (Inside Modal) ---
+    const clearBtn = document.getElementById('clear-cart');
+    const processBtn = document.getElementById('process-order');
+
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function() {
+            sessionStorage.removeItem('cartItems'); 
+            cartList.innerHTML = '<li style="list-style:none;">Your cart is empty.</li>'; // Update UI instantly
+            alert("Cart cleared.");
+        });
+    }
+
+    if (processBtn) {
+        processBtn.addEventListener('click', function() {
+            sessionStorage.removeItem('cartItems'); 
+            modal.style.display = "none"; // Close window
+            alert("Thank you for your order.");
+        });
+    }
+
+    // --- 5. CUSTOM ORDER FORM (About Us Page) ---
     const contactForm = document.querySelector('.custom-form');
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevents page reload so data can be saved
+            e.preventDefault();
             
-            // Capture the specific input values from your about.html IDs
             const customerName = document.getElementById('name').value;
             const customerRequest = document.getElementById('request').value;
 
-            // Create the data object to be stored
             const feedbackEntry = {
                 name: customerName,
                 request: customerRequest,
                 date: new Date().toLocaleDateString()
             };
 
-            // Save the object to localStorage [cite: 591, 592]
             localStorage.setItem('customerFeedback', JSON.stringify(feedbackEntry));
             
             alert(`Thank you for your message, ${customerName}! Your message has been sent.`);
-            contactForm.reset(); // Clears the form fields
+            contactForm.reset();
         });
     }
 });
