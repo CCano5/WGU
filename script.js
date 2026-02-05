@@ -1,117 +1,84 @@
-// Wait for the DOM to be fully initialized
-document.addEventListener('DOMContentLoaded', () => {
+// Wait for the DOM to fully load before running scripts
+document.addEventListener('DOMContentLoaded', function() {
 
-    // --- 1. GLOBAL FOOTER: Subscribe Feature ---
+    // --- 1. SUBSCRIBE FEATURE (Global Footer) ---
     const subscribeBtn = document.querySelector('footer .btn-cta');
     if (subscribeBtn) {
-        subscribeBtn.addEventListener('click', (e) => {
+        subscribeBtn.addEventListener('click', function(e) {
             e.preventDefault(); 
             alert("Thank you for subscribing.");
         });
     }
 
-    // --- 2. GALLERY PAGE: Shopping Cart Logic ---
-    
-    // "Add to Cart" Buttons
+    // --- 2. SHOPPING CART LOGIC (sessionStorage) ---
+    // Targets the "Add to Cart" buttons on the Gallery page
     const addToCartBtns = document.querySelectorAll('.product-card .btn-cta');
     addToCartBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('click', function(e) {
+            // Logic to grab the specific book or item name from the card
             const productName = e.target.parentElement.querySelector('h3').innerText;
             
+            // Retrieve current cart from session storage or start a new array [cite: 513]
             let cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
             cart.push(productName);
             
+            // Save the updated array back to sessionStorage [cite: 513]
             sessionStorage.setItem('cartItems', JSON.stringify(cart));
-            alert("Item added to the cart.");
+            alert(`${productName} added to the cart.`);
         });
     });
 
-    // --- MODAL LOGIC ---
-    const modal = document.getElementById('cart-modal');
-    const cartIcon = document.getElementById('cart-icon');
-    const viewCartBtn = document.getElementById('view-cart-btn'); // Secondary Button
-    const closeModal = document.querySelector('.close-modal');
-    const cartList = document.getElementById('cart-items-list');
-
-    // Function to Open Modal and Populate List
-    const openModal = (e) => {
-        if (e) e.preventDefault(); // Prevent default link behavior
-        
-        // Populate the list
-        cartList.innerHTML = ''; // Clear previous list
-        const cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
-        
-        if (cart.length === 0) {
-            cartList.innerHTML = '<li style="list-style:none;">Your cart is empty.</li>';
-        } else {
-            cart.forEach(item => {
-                const li = document.createElement('li');
-                li.textContent = item;
-                cartList.appendChild(li);
-            });
-        }
-        
-        modal.style.display = "block"; // Show modal
-    };
-
-    // Trigger 1: Click on Cart Icon in Header
-    if (cartIcon && modal) {
-        cartIcon.addEventListener('click', openModal);
-    }
-
-    // Trigger 2: Click on "View Shopping Cart" Button in Body
-    if (viewCartBtn && modal) {
-        viewCartBtn.addEventListener('click', openModal);
-    }
-
-    // Close Modal when X is clicked
-    if (closeModal) {
-        closeModal.addEventListener('click', () => {
-            modal.style.display = "none";
+    // View Cart Modal Simulation
+    // Reads from sessionStorage to display current selections [cite: 514]
+    const viewCartBtn = document.querySelector('.gallery-header .btn-cta:first-child');
+    if (viewCartBtn) {
+        viewCartBtn.addEventListener('click', function() {
+            const cart = JSON.parse(sessionStorage.getItem('cartItems')) || [];
+            if (cart.length === 0) {
+                alert("Your cart is empty.");
+            } else {
+                alert("Your Cart:\n- " + cart.join("\n- "));
+            }
         });
     }
 
-    // Close Modal when clicking outside the box
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.style.display = "none";
-        }
-    });
-
-    // --- BUTTONS INSIDE MODAL: Clear & Process ---
+    // Clear Cart & Process Order: Deleting Session Data [cite: 515]
     const clearBtn = document.getElementById('clear-cart');
     const processBtn = document.getElementById('process-order');
 
-    if (clearBtn) {
-        clearBtn.addEventListener('click', () => {
-            sessionStorage.removeItem('cartItems'); 
-            cartList.innerHTML = '<li style="list-style:none;">Your cart is empty.</li>'; // Visually clear list
-            alert("Cart cleared.");
-        });
-    }
+    [clearBtn, processBtn].forEach(btn => {
+        if (btn) {
+            btn.addEventListener('click', function() {
+                sessionStorage.removeItem('cartItems'); // Clears the storage [cite: 515]
+                const message = btn.id === 'clear-cart' ? "Cart cleared." : "Thank you for your order.";
+                alert(message);
+            });
+        }
+    });
 
-    if (processBtn) {
-        processBtn.addEventListener('click', () => {
-            sessionStorage.removeItem('cartItems'); 
-            modal.style.display = "none"; 
-            alert("Thank you for your order.");
-        });
-    }
-
-    // --- 3. ABOUT US: Custom Orders ---
+    // --- 3. CUSTOM ORDER FORM (localStorage) ---
+    // Persistently saves customer info from the About Us page [cite: 591, 592]
     const contactForm = document.querySelector('.custom-form');
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevents page reload so data can be saved
             
-            const feedbackData = {
-                name: document.getElementById('name').value,
-                request: document.getElementById('request').value
+            // Capture the specific input values from your about.html IDs
+            const customerName = document.getElementById('name').value;
+            const customerRequest = document.getElementById('request').value;
+
+            // Create the data object to be stored
+            const feedbackEntry = {
+                name: customerName,
+                request: customerRequest,
+                date: new Date().toLocaleDateString()
             };
+
+            // Save the object to localStorage [cite: 591, 592]
+            localStorage.setItem('customerFeedback', JSON.stringify(feedbackEntry));
             
-            localStorage.setItem('customerFeedback', JSON.stringify(feedbackData));
-            alert("Thank you for your message.");
-            contactForm.reset();
+            alert(`Thank you for your message, ${customerName}! Your message has been sent.`);
+            contactForm.reset(); // Clears the form fields
         });
     }
 });
